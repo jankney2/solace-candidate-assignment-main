@@ -5,18 +5,16 @@ import AdvocateRow from "../components/Advocate";
 import { Advocate } from "@/types/Advocate";
 
 // fixes
-// split advocate into its own component
-// typing (Advocate)
-// search function does not work
-// remove inline styles
-// remove html selectors
+// restyle
 // add tailwind classes (mobile responsive)
 
 //features
-// add checkboxes for search columns (?)
 // add pagination (?)
+// axios client with JWT
+// no advocates found message
 // add sorting by column (?)
 // add a loading page
+// split search boxes out into their own component
 
 export default function Home() {
   const [advocates, setAdvocates] = useState([]);
@@ -25,13 +23,12 @@ export default function Home() {
     "firstName",
     "lastName",
     "specialties",
-    "city",
-    "degree",
+    // "city",
+    // "degree",
     "yearsOfExperience",
-    "phoneNumber",
+    // "phoneNumber",
   ]);
 
-  // this pattern is not good
   useEffect(() => {
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
@@ -72,7 +69,6 @@ export default function Home() {
   return (
     <main>
       <h1>Solace Advocates</h1>
-      {/* searchbox  */}
       <div>
         <p>Search</p>
         <p>
@@ -154,9 +150,7 @@ export default function Home() {
           {advocates.map((advocate: Advocate) => {
             return shouldRenderAdvocate(advocate) ? (
               <AdvocateRow key={advocate.id} advocate={advocate} />
-            ) : (
-              <div></div>
-            );
+            ) : null;
           })}
         </tbody>
       </table>
