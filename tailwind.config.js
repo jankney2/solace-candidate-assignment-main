@@ -16,6 +16,22 @@ module.exports = {
       animation: {
         specialtyFadeIn: "specialtyFadeIn 0.3s ease-out forwards",
       },
+      colors: {
+        solace: {
+          blue: "#00C895", // Their primary brand color (actually a teal)
+          darkblue: "#101C32", // Dark blue used in headers
+          gray: "#667085", // Text color
+          lightgray: "#F5F5F5", // Background color
+          hover: "#00B084", // Slightly darker version of primary for hover states
+        },
+      },
+      fontFamily: {
+        sans: ["Inter", "sans-serif"],
+      },
+      boxShadow: {
+        solace:
+          "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+      },
     },
   },
   plugins: [],

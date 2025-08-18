@@ -10,38 +10,34 @@ export default function AdvocateRow({ advocate }: { advocate: Advocate }) {
   const hasMoreSpecialties =
     advocate.specialties.length > MAX_VISIBLE_SPECIALTIES;
 
-  const visibleSpecialties = isExpanded
-    ? advocate.specialties
-    : advocate.specialties.slice(0, MAX_VISIBLE_SPECIALTIES);
-
   return (
-    <tr className="hover:bg-gray-50 transition-all  ease-in-out">
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+    <tr className="hover:bg-solace-lightgray/50 transition-all ease-in-out">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-solace-darkblue">
         {advocate.firstName}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-solace-darkblue">
         {advocate.lastName}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 transition-all ">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-solace-darkblue">
         {advocate.city}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 transition-all ">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-solace-darkblue">
         {advocate.degree}
       </td>
-      <td className="px-6 py-4 text-sm text-gray-900 transition-all ">
+      <td className="px-6 py-4 text-sm text-solace-darkblue">
         <div className="flex flex-wrap gap-1.5 items-center">
           <div
             className={`
-            flex flex-wrap gap-1.5 items-center overflow-hidden transition-all  ease-in-out
-            ${isExpanded ? "max-h-[500px]" : "max-h-8"}
-          `}
+              flex flex-wrap gap-1.5 items-center overflow-hidden transition-all ease-in-out
+              ${isExpanded ? "max-h-[500px]" : "max-h-8"}
+            `}
           >
             {advocate.specialties.map((s: Specialty, index: number) => (
               <span
                 key={s.id}
                 className={`
                   inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-                  bg-blue-100 text-blue-800 transition-all  ease-in-out
+                  bg-solace-blue/10 text-solace-blue transition-all ease-in-out
                   ${
                     index >= MAX_VISIBLE_SPECIALTIES && !isExpanded
                       ? "h-0 opacity-0 p-0 m-0"
@@ -59,7 +55,7 @@ export default function AdvocateRow({ advocate }: { advocate: Advocate }) {
           {hasMoreSpecialties && (
             <button
               onClick={() => setIsExpanded(!isExpanded)}
-              className="inline-flex items-center px-2 py-0.5 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors "
+              className="inline-flex items-center px-2 py-0.5 text-xs font-medium text-solace-blue hover:text-solace-hover transition-colors"
             >
               {isExpanded
                 ? "Show Less"
@@ -70,10 +66,10 @@ export default function AdvocateRow({ advocate }: { advocate: Advocate }) {
           )}
         </div>
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 transition-all ">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-solace-darkblue">
         {advocate.yearsOfExperience}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 transition-all ">
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-solace-darkblue">
         {advocate.phoneNumber}
       </td>
     </tr>
