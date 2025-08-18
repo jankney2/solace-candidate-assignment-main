@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AdvocateRow from "../components/Advocate";
+import { Advocate } from "@/types/Advocate";
 
 // fixes
 // split advocate into its own component
@@ -18,84 +20,142 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchBy, setSearchBy] = useState<string[]>([
+    "firstName",
+    "lastName",
+    "specialties",
+    "city",
+    "degree",
+    "yearsOfExperience",
+    "phoneNumber",
+  ]);
 
+  // this pattern is not good
   useEffect(() => {
-    console.log("fetching advocates...");
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
         setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
       });
     });
   }, []);
 
-  const onChange = (e) => {
-    const searchTerm = e.target.value;
-
-    document.getElementById("search-term").innerHTML = searchTerm;
-
-    console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
-      );
-    });
-
-    setFilteredAdvocates(filteredAdvocates);
+  const modifySearchColumns = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSearchBy([...searchBy, e.target.value]);
+    } else {
+      setSearchBy(searchBy.filter((item) => item !== e.target.value));
+    }
   };
 
-  const onClick = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
+  const shouldRenderAdvocate = (advocate: Advocate) => {
+    return searchBy.some((column) => {
+      if (column === "specialties") {
+        return advocate.specialties.some((specialty) =>
+          specialty.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
+      if (column === "yearsOfExperience" || column === "phoneNumber") {
+        return advocate[column as keyof Advocate]
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+      }
+      const value = advocate[column as keyof Advocate];
+      return (
+        typeof value === "string" &&
+        value.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
   };
 
   return (
-    <main style={{ margin: "24px" }}>
+    <main>
       <h1>Solace Advocates</h1>
-      <br />
-      <br />
+      {/* searchbox  */}
       <div>
         <p>Search</p>
         <p>
-          Searching for: <span id="search-term"></span>
+          Searching for: <span id="search-term">{searchTerm}</span>
         </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
+        <input
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ border: "1px solid black" }}
+        />
+
+        <div>
+          include columns:
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="firstName"
+            defaultChecked={searchBy.includes("firstName")}
+          />
+          <label htmlFor="firstName"> First Name</label>
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="lastName"
+            defaultChecked={searchBy.includes("lastName")}
+          />
+          <label htmlFor="lastName"> Last Name</label>
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="city"
+            defaultChecked={searchBy.includes("city")}
+          />
+          <label htmlFor="city"> City</label>
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="degree"
+            defaultChecked={searchBy.includes("degree")}
+          />
+          <label htmlFor="degree"> Degree</label>
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="specialties"
+            defaultChecked={searchBy.includes("specialties")}
+          />
+          <label htmlFor="specialties"> Specialties</label>
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="yearsOfExperience"
+            defaultChecked={searchBy.includes("yearsOfExperience")}
+          />
+          <label htmlFor="yearsOfExperience"> Years of Experience</label>
+          <input
+            type="checkbox"
+            onChange={modifySearchColumns}
+            value="phoneNumber"
+            defaultChecked={searchBy.includes("phoneNumber")}
+          />
+          <label htmlFor="phoneNumber"> Phone Number</label>
+        </div>
+        <button onClick={() => setSearchTerm("")}>Reset Search</button>
       </div>
-      <br />
-      <br />
       <table>
         <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>City</th>
+            <th>Degree</th>
+            <th>Specialties</th>
+            <th>Years of Experience</th>
+            <th>Phone Number</th>
+          </tr>
         </thead>
         <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
+          {advocates.map((advocate: Advocate) => {
+            return shouldRenderAdvocate(advocate) ? (
+              <AdvocateRow key={advocate.id} advocate={advocate} />
+            ) : (
+              <div></div>
             );
           })}
         </tbody>
