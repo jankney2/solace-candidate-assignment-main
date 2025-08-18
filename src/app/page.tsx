@@ -2,6 +2,20 @@
 
 import { useEffect, useState } from "react";
 
+// fixes
+// split advocate into its own component
+// typing (Advocate)
+// search function does not work
+// remove inline styles
+// remove html selectors
+// add tailwind classes (mobile responsive)
+
+//features
+// add checkboxes for search columns (?)
+// add pagination (?)
+// add sorting by column (?)
+// add a loading page
+
 export default function Home() {
   const [advocates, setAdvocates] = useState([]);
   const [filteredAdvocates, setFilteredAdvocates] = useState([]);
