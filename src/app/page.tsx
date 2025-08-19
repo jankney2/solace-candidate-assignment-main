@@ -10,13 +10,13 @@ import { Advocate } from "@/types/Advocate";
 
 //features
 // add pagination (?)
-// axios client with JWT
+// client with JWT
 // no advocates found message
 // add sorting by column (?)
 // add a loading page
 // split search boxes out into their own component
 
-export default function Home() {
+export default function AdvocatePage() {
   const [advocates, setAdvocates] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState<string[]>([
@@ -29,7 +29,6 @@ export default function Home() {
   useEffect(() => {
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
-        console.log(jsonResponse);
         setAdvocates(jsonResponse.data);
       });
     });

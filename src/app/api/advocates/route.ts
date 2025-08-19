@@ -14,7 +14,7 @@ import { Advocate } from "@/types/Advocate";
 
 export async function GET() {
   try {
-    const result: Advocate[] = await db
+    const data: Advocate[] = await db
       .select({
         id: advocates.id,
         firstName: advocates.firstName,
@@ -54,10 +54,8 @@ export async function GET() {
         advocates.createdAt
       );
 
-    console.log(result, "faweoijfawefoiajw");
-    return Response.json({ result });
+    return Response.json({ data });
   } catch (error) {
-    console.error(error);
     return Response.json({ error });
   }
 }

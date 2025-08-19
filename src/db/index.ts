@@ -1,7 +1,7 @@
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 
-// Best practice for Next.js - declare global variables to maintain connection across hot reloads
+// declare global db to maintain connection across hot reloads
 declare global {
   var db: ReturnType<typeof drizzle> | undefined;
 }
@@ -13,12 +13,12 @@ const setup = () => {
 
   try {
     if (!global.db) {
-      // Configure postgres client for Next.js environment
       const queryClient = postgres(process.env.DATABASE_URL, {
-        max: 1, // Reuse the same connection
-        idle_timeout: 20, // Keep-alive timeout
-        connect_timeout: 10, // Connection timeout
-        prepare: false, // Disable prepared statements for better edge compatibility
+        // is this shooting myself in the foot ?
+        max: 1,
+        idle_timeout: 20,
+        connect_timeout: 10,
+        prepare: false,
       });
 
       global.db = drizzle(queryClient);
