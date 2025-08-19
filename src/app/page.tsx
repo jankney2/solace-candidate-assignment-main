@@ -23,15 +23,13 @@ export default function Home() {
     "firstName",
     "lastName",
     "specialties",
-    // "city",
-    // "degree",
     "yearsOfExperience",
-    // "phoneNumber",
   ]);
 
   useEffect(() => {
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
+        console.log(jsonResponse);
         setAdvocates(jsonResponse.data);
       });
     });
@@ -52,8 +50,14 @@ export default function Home() {
           specialty.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
-      if (column === "yearsOfExperience" || column === "phoneNumber") {
-        return advocate[column as keyof Advocate]
+      if (column === "yearsOfExperience") {
+        return advocate[column]
+          .toString()
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+      }
+      if (column === "phoneNumber") {
+        return advocate[column]
           .toString()
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
@@ -67,93 +71,103 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <h1>Solace Advocates</h1>
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term">{searchTerm}</span>
-        </p>
-        <input
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ border: "1px solid black" }}
-        />
-
-        <div>
-          include columns:
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="firstName"
-            defaultChecked={searchBy.includes("firstName")}
-          />
-          <label htmlFor="firstName"> First Name</label>
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="lastName"
-            defaultChecked={searchBy.includes("lastName")}
-          />
-          <label htmlFor="lastName"> Last Name</label>
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="city"
-            defaultChecked={searchBy.includes("city")}
-          />
-          <label htmlFor="city"> City</label>
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="degree"
-            defaultChecked={searchBy.includes("degree")}
-          />
-          <label htmlFor="degree"> Degree</label>
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="specialties"
-            defaultChecked={searchBy.includes("specialties")}
-          />
-          <label htmlFor="specialties"> Specialties</label>
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="yearsOfExperience"
-            defaultChecked={searchBy.includes("yearsOfExperience")}
-          />
-          <label htmlFor="yearsOfExperience"> Years of Experience</label>
-          <input
-            type="checkbox"
-            onChange={modifySearchColumns}
-            value="phoneNumber"
-            defaultChecked={searchBy.includes("phoneNumber")}
-          />
-          <label htmlFor="phoneNumber"> Phone Number</label>
+    <main className="min-h-screen bg-solace-lightgray">
+      <div className="bg-solace-darkblue py-12">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <h1 className="text-4xl font-bold text-white mb-4">Our Advocates</h1>
+          <p className="text-lg text-gray-300 mb-8">
+            Connect with our experienced healthcare professionals
+          </p>
         </div>
-        <button onClick={() => setSearchTerm("")}>Reset Search</button>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>City</th>
-            <th>Degree</th>
-            <th>Specialties</th>
-            <th>Years of Experience</th>
-            <th>Phone Number</th>
-          </tr>
-        </thead>
-        <tbody>
-          {advocates.map((advocate: Advocate) => {
-            return shouldRenderAdvocate(advocate) ? (
-              <AdvocateRow key={advocate.id} advocate={advocate} />
-            ) : null;
-          })}
-        </tbody>
-      </table>
+
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="bg-white rounded-lg shadow-solace p-6 mb-8">
+          <div className="mb-6">
+            <label className="block text-solace-darkblue text-sm font-medium mb-2">
+              Search Advocates
+            </label>
+            <input
+              type="text"
+              placeholder="Search advocates..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-solace-blue focus:border-transparent"
+            />
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-sm font-medium text-solace-darkblue">
+              Search by:
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[
+                "firstName",
+                "lastName",
+                "degree",
+                "city",
+                "specialties",
+                "yearsOfExperience",
+                "phoneNumber",
+              ].map((field) => (
+                <label key={field} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    onChange={modifySearchColumns}
+                    value={field}
+                    defaultChecked={searchBy.includes(field)}
+                    className="rounded border-gray-300 text-solace-blue focus:ring-solace-blue"
+                  />
+                  <span className="text-sm text-solace-gray capitalize">
+                    {field.replace(/([A-Z])/g, " $1").trim()}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-solace overflow-hidden">
+          <div className="relative">
+            <div className="max-h-[600px] overflow-y-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-solace-lightgray sticky top-0 z-10">
+                  <tr>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      First Name
+                    </th>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      Last Name
+                    </th>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      City
+                    </th>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      Degree
+                    </th>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      Specialties
+                    </th>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      Years of Experience
+                    </th>
+                    <th className="px-6 py-3 bg-solace-lightgray text-left text-xs font-medium text-solace-gray uppercase tracking-wider">
+                      Phone Number
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {advocates
+                    .filter((advocate) => shouldRenderAdvocate(advocate))
+                    .map((advocate: Advocate) => (
+                      <AdvocateRow key={advocate.id} advocate={advocate} />
+                    ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
