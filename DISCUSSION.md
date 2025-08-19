@@ -42,10 +42,12 @@ If I were to continue working I'd do the following more "big picture" items:
 - make the search work a bit better on the page- for example, searching first name AND last name at the same time, not just one or the other ("john" returns john doe, "doe" returns john doe, but "john doe" returns nothing currently).
 - mobile responisve styling (the table is not mobile friendly).
 
-- sort by column on the advocatestable
+- sort columns on the advocatestable (particularly helpful for sorting by years of experience)
 - build out other core app features (globalized state, authentication, etc)
 - create a class to interact with the Advocates database table. this would include some methods like getAdvocates(), getAdvocateById(), createAdvocate(), updateAdvocate(), deleteAdvocate().
 
+- create some helper classes for api responses (or utilize some out of the box ones from next). common things like APIResponse, APIError that would include more detailed info about what happened
+
 - Honestly, i think the best thing to do (long term) would to be to create a table builder class that could take in any number of columns and build a table based around that- this pattern is super common- get a list of data, then render a list of rows based on that data. it would be used throughout the entire app, so something like <AppTable columns={columns} data={data}  /> could work pretty well, maintain consistency throughout the app, or could be extended to handle specific use cases/compexities.
 
-There's a lot more to talk about but just wanted to give a general overview of how I approached the assignment. Would love to chat more about it and get some feedback!
+There's a lot more to talk about but just wanted to give a general overview of how I approached the assignment. Would love to chat more about it and get some feedback! I prioritized speed (due to the time limit) and trying to get in as many working features as I could so I sacrificed a bit on project structure and organization.
