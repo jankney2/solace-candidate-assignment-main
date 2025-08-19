@@ -1,7 +1,11 @@
 import db from "../../../db";
-import { advocates } from "../../../db/schema";
-import { advocateData } from "../../../db/seed/advocates";
-
+import { sql, eq } from "drizzle-orm";
+import {
+  advocates,
+  advocate_specialties,
+  specialties,
+} from "../../../db/schema";
+import { Advocate } from "@/types/Advocate";
 // Fixes:
 // error handling
 // typing
@@ -9,10 +13,51 @@ import { advocateData } from "../../../db/seed/advocates";
 // POST/PATCH/DELETE route ?
 
 export async function GET() {
-  // Uncomment this line to use a database
-  // const data = await db.select().from(advocates);
+  try {
+    const result: Advocate[] = await db
+      .select({
+        id: advocates.id,
+        firstName: advocates.firstName,
+        lastName: advocates.lastName,
+        city: advocates.city,
+        degree: advocates.degree,
+        yearsOfExperience: advocates.yearsOfExperience,
+        phoneNumber: advocates.phoneNumber,
+        createdAt: advocates.createdAt,
+        specialties: sql<any>`COALESCE(
+          json_agg(
+            json_build_object(
+              'id', ${specialties.id},
+              'name', ${specialties.name}
+            )
+          ) FILTER (WHERE ${specialties.id} IS NOT NULL),
+          '[]'
+        )::json`.as("specialties"),
+      })
+      .from(advocates)
+      .leftJoin(
+        advocate_specialties,
+        eq(advocate_specialties.advocate_id, advocates.id)
+      )
+      .leftJoin(
+        specialties,
+        eq(specialties.id, advocate_specialties.specialty_id)
+      )
+      .groupBy(
+        advocates.id,
+        advocates.firstName,
+        advocates.lastName,
+        advocates.city,
+        advocates.degree,
+        advocates.yearsOfExperience,
+        advocates.phoneNumber,
+        advocates.createdAt
+      );
 
-  const data = advocateData;
-
-  return Response.json({ data });
+    console.log(result, "faweoijfawefoiajw");
+    return Response.json({ result });
+  } catch (error) {
+    console.error(error);
+    return Response.json({ error });
+  }
 }
