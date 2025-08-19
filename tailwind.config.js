@@ -18,7 +18,7 @@ module.exports = {
       },
       colors: {
         solace: {
-          blue: "#00C895", // Their primary brand color (actually a teal)
+          blue: "#00C895", // Their primary brand color
           darkblue: "#101C32", // Dark blue used in headers
           gray: "#667085", // Text color
           lightgray: "#F5F5F5", // Background color
