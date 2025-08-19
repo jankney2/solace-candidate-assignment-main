@@ -30,10 +30,10 @@ I've never used Drizzle ORM before, but I've used SQLalchemy a decent amount so 
 
 If I were to continue working I'd do the following more "big picture" items:
 
+- add an index onto the advocates table (for quicker lookups) and pagination to the endpoint to limit the number of advocates returned at once. This creates the problem of "who gets to show up first," so potentially we'd want to add a location based search to this ?
 - Unit tests. I'm a big beliver in getting some tests written out for th
 - set up some type of authentication for frontend users (probably JWT bearer token) and add that into the fetch API. some light googling tells me that the convention is to stick with fetch in Next.js. I'd create a class that would wrap the fetch client and add the specific user authorization headers into each request so that I can verify user identity when requests are made.
 
-- add pagination to the advocates table
 - offload the search onto the backend of the app? i did some reading on the "use client" and "use server" portions of next,
 
 -segment out the database design better
