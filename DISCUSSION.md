@@ -51,3 +51,12 @@ If I were to continue working I'd do the following more "big picture" items:
 - Honestly, i think the best thing to do (long term) would to be to create a table builder class that could take in any number of columns and build a table based around that- this pattern is super common- get a list of data, then render a list of rows based on that data. it would be used throughout the entire app, so something like <AppTable columns={columns} data={data}  /> could work pretty well, maintain consistency throughout the app, or could be extended to handle specific use cases/compexities.
 
 There's a lot more to talk about but just wanted to give a general overview of how I approached the assignment. Would love to chat more about it and get some feedback! I prioritized speed (due to the time limit) and trying to get in as many working features as I could so I sacrificed a bit on project structure and organization.
+
+other thoughts:
+
+-Context api for global state ?
+
+- routing/subroutes prepackaged
+- suspense for loading in the data (skeleton)
+  -the way that the folder structure is organized allows me to just GET to my api routes, this isn't good. maybe move it to a top level src folder and keep that out of the app folder ? then create an app/ui folder to house "component" data (not pages). reserve the app folder for actual pages i want displayed ?
+  -wrap this page in a layout

@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import AdvocateRow from "../components/Advocate";
 import { Advocate } from "@/types/Advocate";
@@ -15,6 +14,7 @@ import { Advocate } from "@/types/Advocate";
 // add sorting by column (?)
 // add a loading page
 // split search boxes out into their own component
+// additional data click through for each advocate ?
 
 export default function AdvocatePage() {
   const [advocates, setAdvocates] = useState([]);
@@ -26,6 +26,7 @@ export default function AdvocatePage() {
     "yearsOfExperience",
   ]);
 
+  // bad pattern? or since this is a client side component i need to grab from the api?
   useEffect(() => {
     fetch("/api/advocates").then((response) => {
       response.json().then((jsonResponse) => {
