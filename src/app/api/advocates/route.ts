@@ -1,19 +1,61 @@
 import db from "../../../db";
-import { advocates } from "../../../db/schema";
-import { advocateData } from "../../../db/seed/advocates";
-import type { NextApiRequest, NextApiResponse } from "next";
-
+import { sql, eq } from "drizzle-orm";
+import {
+  advocates,
+  advocate_specialties,
+  specialties,
+} from "../../../db/schema";
+import { Advocate } from "@/types/Advocate";
 // Fixes:
 // error handling
 // typing
 // db seed and setup
 // POST/PATCH/DELETE route ?
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
-  // Uncomment this line to use a database
-  // const data = await db.select().from(advocates);
+export async function GET() {
+  try {
+    const data: Advocate[] = await db
+      .select({
+        id: advocates.id,
+        firstName: advocates.firstName,
+        lastName: advocates.lastName,
+        city: advocates.city,
+        degree: advocates.degree,
+        yearsOfExperience: advocates.yearsOfExperience,
+        phoneNumber: advocates.phoneNumber,
+        createdAt: advocates.createdAt,
+        specialties: sql<any>`COALESCE(
+          json_agg(
+            json_build_object(
+              'id', ${specialties.id},
+              'name', ${specialties.name}
+            )
+          ) FILTER (WHERE ${specialties.id} IS NOT NULL),
+          '[]'
+        )::json`.as("specialties"),
+      })
+      .from(advocates)
+      .leftJoin(
+        advocate_specialties,
+        eq(advocate_specialties.advocate_id, advocates.id)
+      )
+      .leftJoin(
+        specialties,
+        eq(specialties.id, advocate_specialties.specialty_id)
+      )
+      .groupBy(
+        advocates.id,
+        advocates.firstName,
+        advocates.lastName,
+        advocates.city,
+        advocates.degree,
+        advocates.yearsOfExperience,
+        advocates.phoneNumber,
+        advocates.createdAt
+      );
 
-  const data = advocateData;
-
-  return res.status(200).json({ data });
+    return Response.json({ data });
+  } catch (error) {
+    return Response.json({ error });
+  }
 }

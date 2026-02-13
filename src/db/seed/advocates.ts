@@ -2,43 +2,55 @@ import db from "..";
 import { advocates } from "../schema";
 
 const specialties = [
-  "Bipolar",
-  "LGBTQ",
-  "Medication/Prescribing",
-  "Suicide History/Attempts",
-  "General Mental Health (anxiety, depression, stress, grief, life transitions)",
-  "Men's issues",
-  "Relationship Issues (family, friends, couple, etc)",
-  "Trauma & PTSD",
-  "Personality disorders",
-  "Personal growth",
-  "Substance use/abuse",
-  "Pediatrics",
-  "Women's issues (post-partum, infertility, family planning)",
-  "Chronic pain",
-  "Weight loss & nutrition",
-  "Eating disorders",
-  "Diabetic Diet and nutrition",
-  "Coaching (leadership, career, academic and wellness)",
-  "Life coaching",
-  "Obsessive-compulsive disorders",
-  "Neuropsychological evaluations & testing (ADHD testing)",
-  "Attention and Hyperactivity (ADHD)",
-  "Sleep issues",
-  "Schizophrenia and psychotic disorders",
-  "Learning disorders",
-  "Domestic abuse",
+  { id: 1, name: "Bipolar" },
+  { id: 2, name: "LGBTQ" },
+  { id: 3, name: "Medication/Prescribing" },
+  { id: 4, name: "Suicide History/Attempts" },
+  {
+    id: 5,
+    name: "General Mental Health (anxiety, depression, stress, grief, life transitions)",
+  },
+  { id: 6, name: "Men's issues" },
+  { id: 7, name: "Relationship Issues (family, friends, couple, etc)" },
+  { id: 8, name: "Trauma & PTSD" },
+  { id: 9, name: "Personality disorders" },
+  { id: 10, name: "Personal growth" },
+  { id: 11, name: "Substance use/abuse" },
+  { id: 12, name: "Pediatrics" },
+  {
+    id: 13,
+    name: "Women's issues (post-partum, infertility, family planning)",
+  },
+  { id: 14, name: "Chronic pain" },
+  { id: 15, name: "Weight loss & nutrition" },
+  { id: 16, name: "Eating disorders" },
+  { id: 17, name: "Diabetic Diet and nutrition" },
+  { id: 18, name: "Coaching (leadership, career, academic and wellness)" },
+  { id: 19, name: "Life coaching" },
+  { id: 20, name: "Obsessive-compulsive disorders" },
+  { id: 21, name: "Neuropsychological evaluations & testing (ADHD testing)" },
+  { id: 22, name: "Attention and Hyperactivity (ADHD)" },
+  { id: 23, name: "Sleep issues" },
+  { id: 24, name: "Schizophrenia and psychotic disorders" },
+  { id: 25, name: "Learning disorders" },
+  { id: 26, name: "Domestic abuse" },
 ];
 
 const randomSpecialty = () => {
-  const random1 = Math.floor(Math.random() * 24);
-  const random2 = Math.floor(Math.random() * (24 - random1)) + random1 + 1;
+  const random1 = Math.floor(Math.random() * specialties.length);
+  const random2 =
+    Math.floor(Math.random() * (specialties.length - random1)) + random1 + 1;
 
   return [random1, random2];
 };
 
+const randomId = () => {
+  return Math.floor(Math.random() * 1000);
+};
+
 const advocateData = [
   {
+    id: randomId(),
     firstName: "John",
     lastName: "Doe",
     city: "New York",
@@ -48,6 +60,7 @@ const advocateData = [
     phoneNumber: 5551234567,
   },
   {
+    id: randomId(),
     firstName: "Jane",
     lastName: "Smith",
     city: "Los Angeles",
@@ -57,6 +70,7 @@ const advocateData = [
     phoneNumber: 5559876543,
   },
   {
+    id: randomId(),
     firstName: "Alice",
     lastName: "Johnson",
     city: "Chicago",
@@ -66,6 +80,7 @@ const advocateData = [
     phoneNumber: 5554567890,
   },
   {
+    id: randomId(),
     firstName: "Michael",
     lastName: "Brown",
     city: "Houston",
@@ -75,6 +90,7 @@ const advocateData = [
     phoneNumber: 5556543210,
   },
   {
+    id: randomId(),
     firstName: "Emily",
     lastName: "Davis",
     city: "Phoenix",
@@ -84,6 +100,7 @@ const advocateData = [
     phoneNumber: 5553210987,
   },
   {
+    id: randomId(),
     firstName: "Chris",
     lastName: "Martinez",
     city: "Philadelphia",
@@ -93,6 +110,7 @@ const advocateData = [
     phoneNumber: 5557890123,
   },
   {
+    id: randomId(),
     firstName: "Jessica",
     lastName: "Taylor",
     city: "San Antonio",
@@ -102,6 +120,7 @@ const advocateData = [
     phoneNumber: 5554561234,
   },
   {
+    id: randomId(),
     firstName: "David",
     lastName: "Harris",
     city: "San Diego",
@@ -111,6 +130,7 @@ const advocateData = [
     phoneNumber: 5557896543,
   },
   {
+    id: randomId(),
     firstName: "Laura",
     lastName: "Clark",
     city: "Dallas",
@@ -120,6 +140,7 @@ const advocateData = [
     phoneNumber: 5550123456,
   },
   {
+    id: randomId(),
     firstName: "Daniel",
     lastName: "Lewis",
     city: "San Jose",
@@ -129,6 +150,7 @@ const advocateData = [
     phoneNumber: 5553217654,
   },
   {
+    id: randomId(),
     firstName: "Sarah",
     lastName: "Lee",
     city: "Austin",
@@ -138,6 +160,7 @@ const advocateData = [
     phoneNumber: 5551238765,
   },
   {
+    id: randomId(),
     firstName: "James",
     lastName: "King",
     city: "Jacksonville",
@@ -147,6 +170,7 @@ const advocateData = [
     phoneNumber: 5556540987,
   },
   {
+    id: randomId(),
     firstName: "Megan",
     lastName: "Green",
     city: "San Francisco",
@@ -156,6 +180,7 @@ const advocateData = [
     phoneNumber: 5559873456,
   },
   {
+    id: randomId(),
     firstName: "Joshua",
     lastName: "Walker",
     city: "Columbus",
@@ -165,6 +190,7 @@ const advocateData = [
     phoneNumber: 5556781234,
   },
   {
+    id: randomId(),
     firstName: "Amanda",
     lastName: "Hall",
     city: "Fort Worth",
